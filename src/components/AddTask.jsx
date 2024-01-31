@@ -1,9 +1,8 @@
 import { useContext, useState } from "react";
 import { TasksContext } from "../context";
 
-export default function AddTask({ setIsShow, editableTask , setEditableTask}) {
- 
-  const  initialTask = {
+export default function AddTask({ setIsShow, editableTask, setEditableTask }) {
+  const initialTask = {
     id: crypto.randomUUID(),
     title: "",
     description: "",
@@ -13,7 +12,7 @@ export default function AddTask({ setIsShow, editableTask , setEditableTask}) {
   };
   const [task, setTask] = useState(editableTask ? editableTask : initialTask);
   const { dispatch } = useContext(TasksContext);
-//  the following function will control the form 
+  //  the following function will control the form
   function handleOnChange(key, value) {
     if (key == "tags") {
       const tags = value.split(",");
@@ -30,23 +29,27 @@ export default function AddTask({ setIsShow, editableTask , setEditableTask}) {
       });
     }
   }
-// the following function will work for saving a new task and edit a existing task 
-  function handleSave(e){
+  // the following function will work for saving a new task and edit a existing task
+  function handleSave(e) {
     e.preventDefault();
-    if (editableTask) {
-      dispatch({
-        type: "edited",
-        payload: task,
-      });
-      setEditableTask(null);
+    if (task.title && task.description && task.tags.length && task.priority) {
+      if (editableTask) {
+        dispatch({
+          type: "edited",
+          payload: task,
+        });
+        setEditableTask(null);
+      } else {
+        dispatch({
+          type: "added",
+          payload: task,
+        });
+      }
+      setTask(initialTask);
+      setIsShow(false);
     } else {
-      dispatch({
-        type: "added",
-        payload: task,
-      });
+      alert("Fill the required fields.");
     }
-    setTask(initialTask);
-    setIsShow(false);
   }
   return (
     <div className="absolute left-[30%] top-0  z-50">
@@ -104,7 +107,7 @@ export default function AddTask({ setIsShow, editableTask , setEditableTask}) {
                 required
                 onChange={(e) => handleOnChange("priority", e.target.value)}
               >
-                <option value="">Select Priority</option>
+                <option value=''>Select Priority</option>
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
