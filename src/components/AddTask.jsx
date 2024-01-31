@@ -1,24 +1,24 @@
 import { useContext, useState } from "react";
 import { TasksContext } from "../context";
 
-export default function AddTask() {
+export default function AddTask({ setIsShow }) {
   const initialTask = {
     id: crypto.randomUUID(),
     title: "",
     description: "",
     isFavorite: false,
     priority: "",
-    tags:[]
+    tags: [],
   };
   const [task, setTask] = useState(initialTask);
   const { dispatch } = useContext(TasksContext);
 
   function handleOnChange(key, value) {
-    if(key == 'tags'){
-        const tags = value.split(',');
-        setTask({ ...task, [key]: tags, id: crypto.randomUUID() });
-    }else{
-        setTask({ ...task, [key]: value, id: crypto.randomUUID() });
+    if (key == "tags") {
+      const tags = value.split(",");
+      setTask({ ...task, [key]: tags, id: crypto.randomUUID() });
+    } else {
+      setTask({ ...task, [key]: value, id: crypto.randomUUID() });
     }
   }
   return (
@@ -92,11 +92,13 @@ export default function AddTask() {
             className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
             onClick={(e) => {
               e.preventDefault();
-              setTask(initialTask);
+
               dispatch({
                 type: "added",
                 payload: task,
               });
+              setTask(initialTask);
+              setIsShow(false);
             }}
           >
             Save
@@ -104,6 +106,10 @@ export default function AddTask() {
           <button
             type="submit"
             className="rounded bg-red-500 px-4 py-2 text-white transition-all hover:opacity-80"
+            onClick={() => {
+              setIsShow(false);
+              setTask(initialTask);
+            }}
           >
             Cancel
           </button>
