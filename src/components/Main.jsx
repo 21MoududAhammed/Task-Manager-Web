@@ -18,7 +18,7 @@ export default function Main() {
 
   return (
     <TasksContext.Provider value={{ tasks, dispatch }}>
-      <section className="mb-20 ">
+      <section className="mb-20 mx-20">
         {/* form to add or edit task  */}
         {isShowForm && (
           <AddTask

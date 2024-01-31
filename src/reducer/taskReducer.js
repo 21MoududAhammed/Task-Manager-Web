@@ -19,6 +19,9 @@ export default function tasksReducer(tasks, action){
         case 'deleted':{
             return(tasks.filter(item => item.id !== action.payload))
         }
+        case 'delete_all':{
+            return []
+        }
         case 'makeFav':{
             const nextTasks = tasks.map(task =>{
                 if(task.id === action.payload){
