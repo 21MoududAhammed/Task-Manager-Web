@@ -1,23 +1,19 @@
 import { useContext, useState } from "react";
 import { TasksContext } from "../context";
 
-export default function AddTask({ setIsShow, editableTask }) {
-  let initialTask;
-  if (editableTask) {
-    initialTask = editableTask;
-  } else {
-    initialTask = {
-      id: crypto.randomUUID(),
-      title: "",
-      description: "",
-      isFavorite: false,
-      priority: "",
-      tags: [],
-    };
-  }
-  const [task, setTask] = useState(initialTask);
+export default function AddTask({ setIsShow, editableTask , setEditableTask}) {
+ 
+  const  initialTask = {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    isFavorite: false,
+    priority: "",
+    tags: [],
+  };
+  const [task, setTask] = useState(editableTask ? editableTask : initialTask);
   const { dispatch } = useContext(TasksContext);
-
+//  the following function will control the form 
   function handleOnChange(key, value) {
     if (key == "tags") {
       const tags = value.split(",");
@@ -33,6 +29,24 @@ export default function AddTask({ setIsShow, editableTask }) {
         id: editableTask ? editableTask.id : crypto.randomUUID(),
       });
     }
+  }
+// the following function will work for saving a new task and edit a existing task 
+  function handleSave(e){
+    e.preventDefault();
+    if (editableTask) {
+      dispatch({
+        type: "edited",
+        payload: task,
+      });
+      setEditableTask(null);
+    } else {
+      dispatch({
+        type: "added",
+        payload: task,
+      });
+    }
+    setTask(initialTask);
+    setIsShow(false);
   }
   return (
     <div className="absolute left-[30%] top-0  z-50">
@@ -103,22 +117,7 @@ export default function AddTask({ setIsShow, editableTask }) {
           <button
             type="submit"
             className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
-            onClick={(e) => {
-              e.preventDefault();
-              if (editableTask) {
-                dispatch({
-                  type: "edited",
-                  payload: task,
-                });
-              } else {
-                dispatch({
-                  type: "added",
-                  payload: task,
-                });
-              }
-              setTask(initialTask);
-              setIsShow(false);
-            }}
+            onClick={(e) => handleSave(e)}
           >
             Save
           </button>
@@ -127,6 +126,7 @@ export default function AddTask({ setIsShow, editableTask }) {
             onClick={() => {
               setIsShow(false);
               setTask(initialTask);
+              setEditableTask(null);
             }}
           >
             Cancel
