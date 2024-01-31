@@ -2,8 +2,8 @@ import { useContext } from "react";
 import Task from "./Task";
 import { TasksContext } from "../context";
 
-export default function TaskList({onAddTask}) {
-  const { tasks, dispatch } = useContext(TasksContext);
+export default function TaskList({onAddTask, isShowConfirmPopUp, setIsShowConfirmPopUp}) {
+  const { tasks} = useContext(TasksContext);
   return (
     <div className="overflow-auto">
       <table className="table-fixed overflow-auto xl:w-full">
@@ -34,7 +34,7 @@ export default function TaskList({onAddTask}) {
         </thead>
         <tbody>
           {tasks.map((task) => (
-            <Task key={task.id} task={task} onAddTask={onAddTask}/>
+            <Task key={task.id} task={task} onAddTask={onAddTask} isShowConfirmPopUp={isShowConfirmPopUp} setIsShowConfirmPopUp={setIsShowConfirmPopUp} />
           ))}
         </tbody>
       </table>

@@ -2,9 +2,10 @@ import { useContext } from "react";
 import { FaStar } from "react-icons/fa";
 import { TasksContext } from "../context";
 
-export default function Task({ task , onAddTask}) {
-  const { tasks, dispatch } = useContext(TasksContext);
-  
+export default function Task({ task, onAddTask }) {
+  const { dispatch } = useContext(TasksContext);
+ 
+
   return (
     <tr className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2">
       <td
@@ -41,12 +42,25 @@ export default function Task({ task , onAddTask}) {
       <td className="text-center">{task.priority}</td>
       <td>
         <div className="flex items-center justify-center space-x-3">
-          <button className="text-red-500">Delete</button>
-          <button className="text-blue-500"
-          onClick={()=>{
-            onAddTask(task)
-          }}
-          >Edit</button>
+          <button
+            className="text-red-500"
+            onClick={() => {
+              dispatch({
+                type: "deleted",
+                payload: task.id,
+              });
+            }}
+          >
+            Delete
+          </button>
+          <button
+            className="text-blue-500"
+            onClick={() => {
+              onAddTask(task);
+            }}
+          >
+            Edit
+          </button>
         </div>
       </td>
     </tr>

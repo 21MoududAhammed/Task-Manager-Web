@@ -6,29 +6,36 @@ import tasksReducer from "../reducer/taskReducer";
 import tasksData from "../data/data";
 import AddTask from "./AddTask";
 
-
 export default function Main() {
-    const [tasks, dispatch] = useReducer(tasksReducer, tasksData);
-    const [isShow, setIsShow] = useState(false);
-    const [editableTask, setEditableTask] = useState(null);
-    function handleAddTask(task){
-        setIsShow(!isShow);
-        task && setEditableTask(task);
+  const [tasks, dispatch] = useReducer(tasksReducer, tasksData);
+  const [isShowForm, setIsShowForm] = useState(false);
+  const [editableTask, setEditableTask] = useState(null);
 
-    }
-   
+  function handleAddTask(task) {
+    setIsShowForm(!isShowForm);
+    task && setEditableTask(task);
+  }
+
   return (
-   <TasksContext.Provider value={{tasks, dispatch}}>
-
-     <section className="mb-20" id="tasks">
-       {isShow && <AddTask setIsShow={setIsShow} editableTask={editableTask} setEditableTask={setEditableTask}/>}
-      <div className="container">
-        <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-          <TaskActions onAddTask={handleAddTask}/>
-          <TaskList onAddTask={handleAddTask}/>
+    <TasksContext.Provider value={{ tasks, dispatch }}>
+      <section className="mb-20 ">
+        {/* form to add or edit task  */}
+        {isShowForm && (
+          <AddTask
+            setIsShow={setIsShowForm}
+            editableTask={editableTask}
+            setEditableTask={setEditableTask}
+          />
+        )}
+        <div className="container">
+          <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16 ">
+            <TaskActions onAddTask={handleAddTask} />
+            <TaskList
+              onAddTask={handleAddTask}
+            />
+          </div>
         </div>
-      </div>
-    </section>
-   </TasksContext.Provider>
+      </section>
+    </TasksContext.Provider>
   );
 }
