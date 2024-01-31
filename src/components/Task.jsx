@@ -1,8 +1,15 @@
+import { useContext } from "react";
 import { FaStar } from "react-icons/fa";
+import { TasksContext } from "../context";
 export default function Task({ task }) {
+  const {tasks, dispatch} = useContext(TasksContext);
   return (
     <tr className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2">
-      <td>{task.isFavorite ? <FaStar color="yellow" /> : <FaStar />}</td>
+      {/* <td>{task.isFavorite ? <FaStar color="yellow" /> : <FaStar />}</td> */}
+      <td onClick={()=>dispatch({
+        type:'makeFav',
+        payload: task.id,
+      })}>{task.isFavorite ? <FaStar color="yellow" /> : <FaStar />}</td>
       <td>{task.title}</td>
       <td>
         <div>{task.description}</div>
