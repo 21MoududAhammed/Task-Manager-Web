@@ -1,24 +1,37 @@
 import { useContext, useState } from "react";
 import { TasksContext } from "../context";
 
-export default function AddTask({ setIsShow }) {
-  const initialTask = {
-    id: crypto.randomUUID(),
-    title: "",
-    description: "",
-    isFavorite: false,
-    priority: "",
-    tags: [],
-  };
+export default function AddTask({ setIsShow, editableTask }) {
+  let initialTask;
+  if (editableTask) {
+    initialTask = editableTask;
+  } else {
+    initialTask = {
+      id: crypto.randomUUID(),
+      title: "",
+      description: "",
+      isFavorite: false,
+      priority: "",
+      tags: [],
+    };
+  }
   const [task, setTask] = useState(initialTask);
   const { dispatch } = useContext(TasksContext);
 
   function handleOnChange(key, value) {
     if (key == "tags") {
       const tags = value.split(",");
-      setTask({ ...task, [key]: tags, id: crypto.randomUUID() });
+      setTask({
+        ...task,
+        [key]: tags,
+        id: editableTask ? editableTask.id : crypto.randomUUID(),
+      });
     } else {
-      setTask({ ...task, [key]: value, id: crypto.randomUUID() });
+      setTask({
+        ...task,
+        [key]: value,
+        id: editableTask ? editableTask.id : crypto.randomUUID(),
+      });
     }
   }
   return (
@@ -92,11 +105,17 @@ export default function AddTask({ setIsShow }) {
             className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
             onClick={(e) => {
               e.preventDefault();
-
-              dispatch({
-                type: "added",
-                payload: task,
-              });
+              if (editableTask) {
+                dispatch({
+                  type: "edited",
+                  payload: task,
+                });
+              } else {
+                dispatch({
+                  type: "added",
+                  payload: task,
+                });
+              }
               setTask(initialTask);
               setIsShow(false);
             }}
@@ -104,7 +123,6 @@ export default function AddTask({ setIsShow }) {
             Save
           </button>
           <button
-            type="submit"
             className="rounded bg-red-500 px-4 py-2 text-white transition-all hover:opacity-80"
             onClick={() => {
               setIsShow(false);

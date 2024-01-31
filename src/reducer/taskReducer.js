@@ -1,11 +1,20 @@
 export default function tasksReducer(tasks, action){
-  
+    
     switch(action.type){
         case 'added':{
-            console.log(action.payload);
             return([
                 ...tasks, action.payload
             ])
+        }
+        case 'edited':{
+        
+            return(tasks.map(task => {
+                if(task.id !== action.payload.id){
+                    return task;
+                }else{
+                    return action.payload;
+                }
+            }))
         }
         case 'deleted':{
             return(tasks.filter(item => item.id !== action.payload))

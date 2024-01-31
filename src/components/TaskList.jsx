@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Task from "./Task";
 import { TasksContext } from "../context";
 
-export default function TaskList() {
+export default function TaskList({onAddTask}) {
   const { tasks, dispatch } = useContext(TasksContext);
   return (
     <div className="overflow-auto">
@@ -34,7 +34,7 @@ export default function TaskList() {
         </thead>
         <tbody>
           {tasks.map((task) => (
-            <Task key={task.id} task={task} />
+            <Task key={task.id} task={task} onAddTask={onAddTask}/>
           ))}
         </tbody>
       </table>
