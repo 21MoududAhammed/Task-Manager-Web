@@ -2,7 +2,7 @@ import heroImg from '../assets/frame.png';
 export default function HeroSection() {
   return (
     <section className="pb-[114px] pt-20 md:mt-[100px]  ">
-      <div className="container lg:px-20">
+      <div className="container px-2 lg:px-20">
         <div className="grid items-center gap-6 md:grid-cols-2">
           <div className="flex justify-center md:order-2">
             <img
@@ -14,8 +14,8 @@ export default function HeroSection() {
             />
           </div>
           <div>
-            <h1 className="mb-1.5 text-[56px] font-bold leading-none text-[#F5BF42] lg:text-[73px]">
-              Tasker
+            <h1 className="mb-1.5 text-3xl md:text-[56px] font-bold leading-none text-[#F5BF42] lg:text-[73px]">
+              Task Manager
             </h1>
             <p className="text-lg my-2 opacity-60">
               Effortlessly Organize, Prioritize, and Conquer Tasks with Tasker -
